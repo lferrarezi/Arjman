@@ -1,0 +1,36 @@
+.arjman-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 60px; /* Offset to avoid blocking native send buttons */
+  z-index: 1000;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(76, 175, 80, 0.85); /* Premium green with transparency */
+  backdrop-filter: blur(8px); /* Glassmorphism */
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+.arjman-btn:hover {
+  background: rgba(76, 175, 80, 1);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.arjman-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+}
+
+.arjman-btn:disabled {
+  background: rgba(128, 128, 128, 0.7);
+  cursor: not-allowed;
+  transform: none;
+}

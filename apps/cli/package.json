@@ -1,0 +1,15 @@
+{
+  "name": "@arjman/cli",
+  "version": "1.0.0",
+  "description": "Arjman CLI for Kiro, Devin, Antigravity, and Copilot",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "arjman": "./index.js"
+  },
+  "dependencies": {
+    "@arjman/core": "^1.0.0",
+    "commander": "^14.0.3",
+    "yargs": "^18.0.0"
+  }
+}

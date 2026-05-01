@@ -1,0 +1,16 @@
+{
+  "name": "arjman-ecosystem",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Lossless Cognitive Compression Toolkit for LLMs",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "author": "",
+  "license": "ISC"
+}
