@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5849f5"/>
+      <stop offset="100%" stop-color="#2d78ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect x="8" y="20" width="112" height="88" rx="20" fill="url(#bg)" filter="url(#shadow)"/>
+  <path d="M24 44c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16v42c0 8.8-7.2 16-16 16H40c-8.8 0-16-7.2-16-16V44z" fill="#fff" opacity="0.12"/>
+  <path d="M32 38h16c2.2 0 4 1.8 4 4v4H32c-2.2 0-4-1.8-4-4v-4c0-2.2 1.8-4 4-4z" fill="#fff" opacity="0.65"/>
+  <rect x="34" y="58" width="60" height="10" rx="5" fill="#fff" opacity="0.75"/>
+  <rect x="34" y="74" width="42" height="10" rx="5" fill="#fff" opacity="0.75"/>
+  <g fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M44 96c0-14 20-24 40-24"/>
+    <path d="M84 96c0-14-20-24-40-24"/>
+    <path d="M46 72l-6-10 6-10" stroke-linejoin="miter"/>
+    <path d="M82 88l6 10-6 10" stroke-linejoin="miter"/>
+  </g>
+  <circle cx="32" cy="92" r="8" fill="#fff" opacity="0.8"/>
+  <circle cx="96" cy="92" r="8" fill="#fff" opacity="0.8"/>
+</svg>

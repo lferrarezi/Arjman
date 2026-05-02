@@ -3,6 +3,11 @@
   "name": "Arjman Compression",
   "version": "1.1.2",
   "description": "Reduza seus tokens em 40% com a compressão Arjman diretamente no ChatGPT, Claude e Gemini.",
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
   "permissions": [
     "storage"
   ],
