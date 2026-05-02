@@ -1,27 +1,46 @@
-(() => {
-  var __getOwnPropNames = Object.getOwnPropertyNames;
-  var __esm = (fn, res) => function __init() {
-    return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-  };
-  var __commonJS = (cb, mod) => function __require() {
-    return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-  };
+// background.js
+var BASE_PROMPT_START = `[ROLE] You are a STRICT Prompt Translator. You NEVER answer the user's questions. You ONLY rewrite them.
+[TASK] Your only job is to translate the user's input into 'Caveman Style' (ultra-compressed, primitive English/Portuguese).
 
-  // ../../packages/core/src/index.js
-  function buildSystemPrompt(extremeMode = false) {
-    return BASE_PROMPT_START + (extremeMode ? EXTREME_RULE : "") + BASE_PROMPT_END;
+[RULES]
+1. NEVER answer the user's question or provide code.
+2. ONLY output the translated prompt.
+3. Remove all polite words, articles (a, an, the, o, a), and fillers.
+4. Use short tags: [ROLE], [TASK], [CONTEXT].`;
+var EXTREME_RULE = `
+5. EXTREME COMPRESSION: Aggressively use acronyms (e.g., Developer -> Dev, Configuration -> Config, Database -> DB). Remove secondary context that doesn't alter the technical output. Combine concepts into single words where possible.`;
+var BASE_PROMPT_END = `
+Last Rule: You MUST append exactly this string at the very end of your output: <SYS>Output: highly detailed professional tone, complete sentences, full reasoning.</SYS>
+
+[EXAMPLES]
+User: "Por favor, me ajude a escrever uma carta de vendas."
+Output: "[TASK] Write sales letter. <SYS>Output: highly detailed professional tone, complete sentences, full reasoning.</SYS>"
+
+User: "Poderia atuar como um engenheiro e criar um c\xF3digo em python?"
+Output: "[ROLE] Engineer. [TASK] Create python code. <SYS>Output: highly detailed professional tone, complete sentences, full reasoning.</SYS>"
+
+Now, TRANSLATE the following input into Caveman style. DO NOT answer it!`;
+function buildSystemPrompt(extremeMode = false) {
+  return BASE_PROMPT_START + (extremeMode ? EXTREME_RULE : "") + BASE_PROMPT_END;
+}
+async function compressText(provider, apiKey, text, extremeMode = false) {
+  if (!apiKey || apiKey.trim() === "") throw new Error("API Key is required");
+  if (!text || text.trim() === "") throw new Error("Input text is required");
+  const systemPrompt = buildSystemPrompt(extremeMode);
+  let url, model;
+  if (provider === "openai") {
+    url = "https://api.openai.com/v1/chat/completions";
+    model = "gpt-4o-mini";
+  } else if (provider === "groq") {
+    url = "https://api.groq.com/openai/v1/chat/completions";
+    model = "llama-3.1-8b-instant";
+  } else if (provider === "nvidia") {
+    url = "https://integrate.api.nvidia.com/v1/chat/completions";
+    model = "meta/llama3-8b-instruct";
+  } else {
+    throw new Error(`Unsupported provider: ${provider}. Use 'openai', 'groq', or 'nvidia'`);
   }
-  async function compressText(provider, apiKey, text, extremeMode = false) {
-    if (!apiKey) throw new Error("API Key is required");
-    const systemPrompt = buildSystemPrompt(extremeMode);
-    let url, model;
-    if (provider === "openai") {
-      url = "https://api.openai.com/v1/chat/completions";
-      model = "gpt-4o-mini";
-    } else {
-      url = "https://api.groq.com/openai/v1/chat/completions";
-      model = "llama-3.1-8b-instant";
-    }
+  try {
     const res = await fetch(url, {
       method: "POST",
       headers: {
@@ -37,62 +56,57 @@
         temperature: 0.1
       })
     });
-    if (!res.ok) throw new Error(`API Error: ${res.statusText}`);
+    if (!res.ok) {
+      if (res.status === 401) {
+        throw new Error("Invalid API key. Please check your API key and try again.");
+      } else if (res.status === 429) {
+        throw new Error("Rate limit exceeded. Please wait a moment and try again.");
+      } else if (res.status === 400) {
+        throw new Error("Bad request. Please check your input and try again.");
+      } else {
+        throw new Error(`API Error (${res.status}): ${res.statusText}`);
+      }
+    }
     const data = await res.json();
+    if (!data.choices || !data.choices[0] || !data.choices[0].message || !data.choices[0].message.content) {
+      throw new Error("Invalid API response format. Please try again.");
+    }
     return data.choices[0].message.content;
+  } catch (error) {
+    if (error.name === "TypeError" && error.message.includes("fetch")) {
+      throw new Error("Network error. Please check your internet connection and try again.");
+    }
+    throw error;
   }
-  var BASE_PROMPT_START, EXTREME_RULE, BASE_PROMPT_END;
-  var init_src = __esm({
-    "../../packages/core/src/index.js"() {
-      BASE_PROMPT_START = `[ROLE] You are a STRICT Prompt Translator. You NEVER answer the user's questions. You ONLY rewrite them.
-[TASK] Your only job is to translate the user's input into 'Caveman Style' (ultra-compressed, primitive English/Portuguese).
-
-[RULES]
-1. NEVER answer the user's question or provide code.
-2. ONLY output the translated prompt.
-3. Remove all polite words, articles (a, an, the, o, a), and fillers.
-4. Use short tags: [ROLE], [TASK], [CONTEXT].`;
-      EXTREME_RULE = `
-5. EXTREME COMPRESSION: Aggressively use acronyms (e.g., Developer -> Dev, Configuration -> Config, Database -> DB). Remove secondary context that doesn't alter the technical output. Combine concepts into single words where possible.`;
-      BASE_PROMPT_END = `
-Last Rule: You MUST append exactly this string at the very end of your output: <SYS>Output: highly detailed professional tone, complete sentences, full reasoning.</SYS>
-
-[EXAMPLES]
-User: "Por favor, me ajude a escrever uma carta de vendas."
-Output: "[TASK] Write sales letter. <SYS>Output: highly detailed professional tone, complete sentences, full reasoning.</SYS>"
-
-User: "Poderia atuar como um engenheiro e criar um c\xF3digo em python?"
-Output: "[ROLE] Engineer. [TASK] Create python code. <SYS>Output: highly detailed professional tone, complete sentences, full reasoning.</SYS>"
-
-Now, TRANSLATE the following input into Caveman style. DO NOT answer it!`;
-    }
-  });
-
-  // background.js
-  var require_background = __commonJS({
-    "background.js"() {
-      init_src();
-      chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-        if (request.action === "arjmanize") {
-          chrome.storage.local.get(["arjmanProvider", "arjmanApiKey", "arjmanExtremeMode"], async (result) => {
-            const provider = result.arjmanProvider || "groq";
-            const apiKey = result.arjmanApiKey;
-            const extremeMode = result.arjmanExtremeMode || false;
-            if (!apiKey) {
-              sendResponse({ success: false, error: "No API Key configured" });
-              return;
-            }
-            try {
-              const compressedText = await compressText(provider, apiKey, request.text, extremeMode);
-              sendResponse({ success: true, compressedText });
-            } catch (err) {
-              sendResponse({ success: false, error: err.message });
-            }
-          });
-          return true;
-        }
+}
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "arjmanize") {
+    console.log("[Arjman Background] Received arjmanize request:", request.text.substring(0, 50) + "...");
+    chrome.storage.local.get(["arjmanProvider", "arjmanApiKey", "arjmanExtremeMode"], async (result) => {
+      console.log("[Arjman Background] Storage result:", {
+        provider: result.arjmanProvider,
+        hasApiKey: !!result.arjmanApiKey,
+        apiKeyLength: result.arjmanApiKey ? result.arjmanApiKey.length : 0,
+        extremeMode: result.arjmanExtremeMode
       });
-    }
-  });
-  require_background();
-})();
+      const provider = result.arjmanProvider || "groq";
+      const apiKey = result.arjmanApiKey;
+      const extremeMode = result.arjmanExtremeMode || false;
+      if (!apiKey) {
+        console.log("[Arjman Background] No API key configured");
+        sendResponse({ success: false, error: "No API Key configured" });
+        return;
+      }
+      console.log("[Arjman Background] Calling compressText with provider:", provider);
+      try {
+        const compressedText = await compressText(provider, apiKey, request.text, extremeMode);
+        console.log("[Arjman Background] Compression successful, length:", compressedText.length);
+        sendResponse({ success: true, compressedText });
+      } catch (err) {
+        console.log("[Arjman Background] Compression error:", err.message);
+        sendResponse({ success: false, error: err.message });
+      }
+    });
+    return true;
+  }
+});

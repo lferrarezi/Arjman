@@ -1,9 +1,11 @@
 {
   "manifest_version": 3,
   "name": "Arjman Compression",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "Reduza seus tokens em 40% com a compressão Arjman diretamente no ChatGPT, Claude e Gemini.",
-  "permissions": ["storage"],
+  "permissions": [
+    "storage"
+  ],
   "host_permissions": [
     "*://*.chatgpt.com/*",
     "*://*.claude.ai/*",
@@ -21,8 +23,12 @@
         "*://*.claude.ai/*",
         "*://*.gemini.google.com/*"
       ],
-      "css": ["content.css"],
-      "js": ["content.js"],
+      "css": [
+        "content.css"
+      ],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_idle"
     }
   ],

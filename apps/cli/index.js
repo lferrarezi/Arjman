@@ -8,7 +8,7 @@ const argv = yargs(hideBin(process.argv))
   .option('provider', {
     alias: 'p',
     type: 'string',
-    description: 'LLM Provider (groq | openai)',
+    description: 'LLM Provider (groq | openai | nvidia)',
     default: 'groq'
   })
   .option('key', {

@@ -39,7 +39,43 @@ Opcionalmente, o Arjman possui um Modo Extremo. Quando ativado, a conversão é 
 **Arjman Extreme Mode (26 tokens) -> Economia de 61.5%:**
 > `[ROLE] Dev. [TASK] Create react button. Make api request. Add comments. <SYS>Output: highly detailed professional tone, complete sentences, full reasoning.</SYS>`
 
-## 🛠 Como Instalar & Usar
+## 🚀 Primeira Release v1.1.2
+* 🚀 First Release v1.1.2*
+
+Esta é a primeira release oficial do Arjman, focada em compressão lossless de prompts para reduzir custos de inferência e evitar estouro de contexto. A versão 1.1.2 inclui melhorias de estabilidade na extensão do navegador e automação de versionamento.
+* This is Arjman's first official release, focused on lossless prompt compression to reduce inference costs and prevent context window exhaustion. Version 1.1.2 includes browser extension stability improvements and version automation.*
+
+### Integrações Suportadas
+* Supported Integrations*
+
+#### 🌐 Navegador (Browser)
+- **ChatGPT**: Botão "🪄 Arjmanize" aparece automaticamente em campos de prompt
+- **Claude**: Suporte completo incluindo interface de código (claude-code)
+- **Gemini**: Compressão em tempo real nos prompts
+
+#### 💻 CLI e Agentes
+- **Devin CLI**: `echo "prompt" | arjman --key "your-key" | devin`
+- **Codex/OpenAI**: `echo "prompt" | arjman --provider openai --key "your-key"`
+- **Claude Code**: Use via pipe para compressão antes de prompts técnicos
+
+### Exemplos de Uso
+* Usage Examples*
+
+```bash
+# Com Devin CLI
+echo "Create a Python script to download YouTube videos with progress bar" | arjman --key "sk-..." | devin
+
+# Com OpenAI/Codex
+echo "Write a React component for user authentication" | arjman --provider openai --key "your-key" --extreme
+
+# Com NVIDIA
+echo "Build a REST API with FastAPI and SQLAlchemy" | arjman --provider nvidia --key "your-nvidia-key"
+
+# Modo extremo para economia máxima
+echo "Database schema design for e-commerce" | arjman --key "..." --extreme
+```
+
+## �🛠 Como Instalar & Usar
 * 🛠 How to Install & Use*
 
 ### Para Navegadores (Chrome/Edge)
@@ -63,5 +99,5 @@ echo "Preciso de um script python que baixa um vídeo do youtube" | arjman --key
 ```
 
 ## 🔒 Privacidade / Privacy
-A sua privacidade é levada a sério. O Arjman exige que você utilize sua própria chave de API (OpenAI ou Groq). Nenhum dado é salvo ou enviado para servidores centrais de terceiros; a comunicação ocorre diretamente entre o seu computador e a provedora da LLM.
-* Your privacy is taken seriously. Arjman requires you to provide your own API key (OpenAI or Groq). No data is saved or sent to central third-party servers; all communication happens directly between your local machine and the LLM provider.*
+A sua privacidade é levada a sério. O Arjman exige que você utilize sua própria chave de API (OpenAI, Groq ou NVIDIA). Nenhum dado é salvo ou enviado para servidores centrais de terceiros; a comunicação ocorre diretamente entre o seu computador e a provedora da LLM.
+* Your privacy is taken seriously. Arjman requires you to provide your own API key (OpenAI, Groq, or NVIDIA). No data is saved or sent to central third-party servers; all communication happens directly between your local machine and the LLM provider.*

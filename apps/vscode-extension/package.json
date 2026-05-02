@@ -1,10 +1,11 @@
 {
   "name": "vscode-extension",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.1.2",
+  "description": "Arjman VSCode Extension - Prompt compression in the IDE",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"No tests specified for VSCode extension yet\"",
+    "build": "echo \"VSCode extension stub - under development\""
   },
   "keywords": [],
   "author": "",

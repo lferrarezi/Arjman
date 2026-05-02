@@ -14,6 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load existing settings
   chrome.storage.local.get(['arjmanProvider', 'arjmanApiKey', 'arjmanExtremeMode'], (result) => {
+    console.log('[Arjman Popup] Loaded settings:', {
+      provider: result.arjmanProvider,
+      hasApiKey: !!result.arjmanApiKey,
+      apiKeyLength: result.arjmanApiKey ? result.arjmanApiKey.length : 0,
+      extremeMode: result.arjmanExtremeMode
+    });
+
     if (result.arjmanProvider) {
       providerSelect.value = result.arjmanProvider;
     }
@@ -30,6 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const provider = providerSelect.value;
     const apiKey = apiKeyInput.value.trim();
     const extremeMode = extremeModeInput.checked;
+
+    console.log('[Arjman Popup] Saving settings:', {
+      provider,
+      hasApiKey: !!apiKey,
+      apiKeyLength: apiKey.length,
+      extremeMode
+    });
 
     chrome.storage.local.set({
       arjmanProvider: provider,
